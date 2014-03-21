@@ -35,4 +35,20 @@ class BotControllerSpec extends FlatSpec with Matchers {
 
     response shouldEqual ("Move(direction=-1:0)")
   }
+
+  it should "Move randomly if there is no nearby zugar" in {
+    val view = List(
+      "__s_p",
+      "W___b",
+      "__MS_",
+      "WWW_B",
+      "????_"
+    )
+
+    val input = Command("React", Map("view" -> view.mkString)).toString()
+
+    val response = BotController.respond(input)
+
+    response should include ("Move(direction=")
+  }
 }
