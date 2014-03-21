@@ -26,4 +26,13 @@ class Vision(input: String) {
 
     size * absY + absX
   }
+
+  override def toString: String = input
+
+  override def equals(o: Any) = o match {
+    case o: Vision => this.toString == o.toString
+    case _ => false
+  }
+
+  override def hashCode = this.input.hashCode()
 }

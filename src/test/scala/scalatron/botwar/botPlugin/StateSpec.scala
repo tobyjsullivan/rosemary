@@ -52,4 +52,19 @@ class StateSpec extends FlatSpec with Matchers {
 
     state.generation should be (None)
   }
+
+  "view" should "return some Vision if a view was specified" in {
+    val view = List(
+      "__s_p",
+      "W___b",
+      "P_MS_",
+      "WWW_B",
+      "????_"
+    )
+
+    val cmd = Command("React", Map("view" -> view.mkString))
+    val state = new State(cmd)
+
+    state.view shouldBe a [Some[Vision]]
+  }
 }
