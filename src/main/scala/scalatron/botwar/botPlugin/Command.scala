@@ -8,7 +8,7 @@ object Command {
       val parts = s.split('=')
       parts(0) -> parts(1)
     }).toMap
-    
+
     Command(opcode, params)
   }
 }
