@@ -1,5 +1,5 @@
 package scalatron.botwar.botPlugin
 
-private[botPlugin] object ControlFunctionFactory {
+object ControlFunctionFactory {
   def create : (String => String) = BotController.respond
 }
