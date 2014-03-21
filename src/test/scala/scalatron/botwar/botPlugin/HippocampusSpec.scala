@@ -22,4 +22,10 @@ class HippocampusSpec extends FlatSpec with Matchers {
 
     Hippocampus.findClosest(origin, points) should be (Point(-2, -3))
   }
+
+  "findClosest" should "throw an exception when an empty set is provided" in {
+    intercept[IllegalArgumentException] {
+      Hippocampus.findClosest(Point(0, 0), Set())
+    }
+  }
 }

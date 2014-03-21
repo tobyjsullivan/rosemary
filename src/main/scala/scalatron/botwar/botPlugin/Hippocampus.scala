@@ -15,6 +15,8 @@ private[botPlugin] object Hippocampus {
   }
 
   def findClosest(origin: Point, l: Set[Point]): Point = {
+    require(l.size > 0, "List of possible points must not be empty")
+
     l.reduce{ (p1, p2) =>
       if (distance(origin, p1) <= distance(origin, p2)) p1
       else p2
