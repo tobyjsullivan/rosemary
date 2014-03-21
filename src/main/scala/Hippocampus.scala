@@ -1,9 +1,7 @@
-package scalatron.botwar.botPlugin
-
 /**
  * The hippocampus is responsible for spatial navigation as well as short- and long-term memory
  */
-private[botPlugin] object Hippocampus {
+object Hippocampus {
   def relPosition(a: Point, b: Point): Point = {
     Point(b.x - a.x, b.y - a.y)
   }

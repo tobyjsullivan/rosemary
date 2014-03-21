@@ -1,7 +1,4 @@
-package scalatron.botwar.botPlugin
-
 import org.scalatest._
-import org.scalatest.Matchers._
 
 class VisionSpec extends FlatSpec with Matchers {
   "constructor" should "throw an exception if length of input is not a perfect square" in {

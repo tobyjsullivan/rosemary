@@ -1,7 +1,4 @@
-package scalatron.botwar.botPlugin
-
 import org.scalatest._
-import org.scalatest.Matchers._
 
 class CommandSpec extends FlatSpec with Matchers {
   "parse" should "correctly parse a simple string" in {

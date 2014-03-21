@@ -1,7 +1,4 @@
-package scalatron.botwar.botPlugin
-
 import org.scalatest._
-import org.scalatest.Matchers._
 
 class PointSpec extends FlatSpec with Matchers {
   "toDirectionString" should "trim directions to acceptable direction range" in {

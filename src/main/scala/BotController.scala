@@ -1,8 +1,6 @@
-package scalatron.botwar.botPlugin
-
 import util.Random
 
-private[botPlugin] object BotController {
+object BotController {
   def respond(input: String): String = Command.parse(input) match {
     case welcome @ Command("Welcome", _) => respondToWelcome(welcome)
     case react @ Command("React", _) => respondToReact(react)

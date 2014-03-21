@@ -1,7 +1,4 @@
-package scalatron.botwar.botPlugin
-
 import org.scalatest._
-import org.scalatest.Matchers._
 
 class HippocampusSpec extends FlatSpec with Matchers {
   "relPosition" should "return the correct vector between two points" in {

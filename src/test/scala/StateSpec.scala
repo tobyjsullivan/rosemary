@@ -1,7 +1,4 @@
-package scalatron.botwar.botPlugin
-
 import org.scalatest._
-import org.scalatest.Matchers._
 
 class StateSpec extends FlatSpec with Matchers {
   "constructor" should "throw an exception if command opcode is not React" in {

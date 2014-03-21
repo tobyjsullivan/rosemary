@@ -1,7 +1,4 @@
-package scalatron.botwar.botPlugin
-
 import org.scalatest._
-import org.scalatest.Matchers._
 
 class BotControllerSpec extends FlatSpec with Matchers {
   "respond" should "respond to a welcome command by setting an apocalypse date" in {

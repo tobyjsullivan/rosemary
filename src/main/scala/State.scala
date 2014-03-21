@@ -1,6 +1,4 @@
-package scalatron.botwar.botPlugin
-
-private[botPlugin] class State(react: Command) {
+class State(react: Command) {
   require(react.opcode == "React", "States can only be generated for React commands")
 
   lazy val generation: Option[Int] = react.params.get("generation").map(s => s.toInt)

@@ -1,6 +1,4 @@
-package scalatron.botwar.botPlugin
-
-private[botPlugin] object Command {
+object Command {
   def parse(input: String): Command = {
     val pieces = input.split('(')
     val opcode = pieces(0)
@@ -13,6 +11,6 @@ private[botPlugin] object Command {
   }
 }
 
-private[botPlugin] case class Command (opcode: String, params: Map[String, String]) {
+case class Command (opcode: String, params: Map[String, String]) {
   override def toString = opcode+"("+ params.map(kv => kv._1 + "=" + kv._2).mkString(",")+")"
 }

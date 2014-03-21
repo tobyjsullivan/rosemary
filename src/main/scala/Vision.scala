@@ -1,6 +1,4 @@
-package scalatron.botwar.botPlugin
-
-private[botPlugin] class Vision(input: String) {
+class Vision(input: String) {
   val AcceptableChars = "MmSsBbPpW_?"
 
   require(input.size > 0, "Input must not be an empty string")
