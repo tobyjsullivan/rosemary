@@ -126,7 +126,68 @@ class VisionSpec extends FlatSpec with Matchers {
     intercept[IllegalArgumentException]{
       vision.lookAt(Point(0, 3))
     }
+  }
 
+  "findAll" should "throw an exception if an invalid character is specified" in {
+    val view = List(
+      "__s_p",
+      "W___b",
+      "P_MS_",
+      "WWW_B",
+      "????_"
+    )
 
+    val vision = new Vision(view.mkString)
+
+    intercept[IllegalArgumentException]{
+      vision.findAll('x')
+    }
+  }
+
+  it should "return an empty set if the specified value is not within view" in {
+    val view = List(
+      "__s_p",
+      "W___b",
+      "__MS_",
+      "WWW_B",
+      "????_"
+    )
+
+    val vision = new Vision(view.mkString)
+
+    vision.findAll('P') shouldEqual Set()
+  }
+
+  it should "return a set of a single point if exactly one instance is within view" in {
+    val view = List(
+      "__s_p",
+      "W___b",
+      "P_MS_",
+      "WWW_B",
+      "????_"
+    )
+
+    val vision = new Vision(view.mkString)
+
+    vision.findAll('P') shouldEqual Set(Point(-2, 0))
+  }
+
+  it should "return all points where the target is located" in {
+    val view = List(
+      "__s_p",
+      "W___b",
+      "P_MS_",
+      "WWW_B",
+      "????_"
+    )
+
+    val vision = new Vision(view.mkString)
+
+    vision.findAll('W') shouldEqual Set(
+      Point(-2, -1),
+      Point(-2, 1),
+      Point(-1, 1),
+      Point(0, 1)
+    )
   }
 }

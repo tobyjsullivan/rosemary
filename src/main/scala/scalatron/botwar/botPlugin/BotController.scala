@@ -1,6 +1,6 @@
 package scalatron.botwar.botPlugin
 
-object BotController {
+private[botPlugin] object BotController {
   def respond(input: String): String = Command.parse(input) match {
     case welcome @ Command("Welcome", _) => respondToWelcome(welcome)
     case react @ Command("React", _) => respondToReact(react)
@@ -16,6 +16,8 @@ object BotController {
 
   private def respondToReact(react: Command): String = {
     val state = new State(react)
+
+
 
     ""
   }
