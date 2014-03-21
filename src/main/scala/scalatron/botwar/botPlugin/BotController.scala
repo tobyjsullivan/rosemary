@@ -14,7 +14,11 @@ object BotController {
     Command("Set", Map("apocalypse" -> apoc)).toString
   }
 
-  private def respondToReact(react: Command): String = ""
+  private def respondToReact(react: Command): String = {
+    val state = new State(react)
+
+    ""
+  }
 
   private def respondToGoodbye(goodbye: Command): String = ""
 }
