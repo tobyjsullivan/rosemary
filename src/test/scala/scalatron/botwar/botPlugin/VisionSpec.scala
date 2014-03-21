@@ -43,4 +43,32 @@ class VisionSpec extends FlatSpec with Matchers {
 
     new Vision(view.mkString)
   }
+
+  "size" should "be equal to the square root of the input string" in {
+    val view = Set(
+      "__S_p",
+      "W___b",
+      "P_MS_",
+      "WWW_B",
+      "????_"
+    )
+
+    val vision = new Vision(view.mkString)
+
+    vision.size should be (5)
+  }
+
+  "center" should "be 3,3 for an input of 5x5" in {
+    val view = Set(
+      "__S_p",
+      "W___b",
+      "P_MS_",
+      "WWW_B",
+      "????_"
+    )
+
+    val vision = new Vision(view.mkString)
+
+    vision.center should equal (Point(2, 2))
+  }
 }
