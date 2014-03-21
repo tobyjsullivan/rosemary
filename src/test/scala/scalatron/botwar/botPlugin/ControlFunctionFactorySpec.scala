@@ -7,8 +7,6 @@ class ControlFunctionFactorySpec extends FlatSpec with Matchers {
   "create" should "return a control function" in {
     val conFunc = ControlFunctionFactory.create
 
-    val res: String = conFunc("Test()")
-
-    res should be ("")
+    conFunc("Test()") should be ("")
   }
 }
