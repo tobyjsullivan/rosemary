@@ -24,7 +24,7 @@ class BotControllerSpec extends FlatSpec {
       "____p",
       "W____",
       "P_MS_",
-      "WWW_B",
+      "WWW__",
       "????_"
     )
 

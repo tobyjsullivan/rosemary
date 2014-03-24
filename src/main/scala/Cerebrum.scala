@@ -6,6 +6,7 @@ class Cerebrum(state: State) {
   private lazy val nearbySnorgs = state.view.map(v => v.findAll('b')).getOrElse(Set())
   private lazy val nearbyEnemyMinibots = state.view.map(v => v.findAll('s')).getOrElse(Set())
   private lazy val nearbyZugar = state.view.map(v => v.findAll('P')).getOrElse(Set())
+  private lazy val nearbyFluppets = state.view.map(v => v.findAll('B')).getOrElse(Set())
 
   private lazy val openHeadings: Set[Point] = {
     val range = state.view.map(v => v.range).getOrElse(0)
@@ -21,13 +22,19 @@ class Cerebrum(state: State) {
     }).toSet
   }
 
-  lazy val isUnderThreat: Boolean = nearbySnorgs.size > 0 || nearbyEnemyMinibots.size > 0
+  lazy val escapeRoute: Option[Point] = {
+    if(nearbySnorgs.size > 0 || nearbyEnemyMinibots.size > 0)
+      Some(Hippocampus.findClosest(Point(0, 0), nearbySnorgs ++ nearbyEnemyMinibots).invert)
+    else None
+  }
 
-  lazy val escapeRoute: Option[Point] = if(isUnderThreat) Some(Hippocampus.findClosest(Point(0, 0), nearbySnorgs ++ nearbyEnemyMinibots).invert) else None
-
-  lazy val isNearFood: Boolean = nearbyZugar.size > 0
-
-  lazy val foodDirection: Option[Point] = if(isNearFood) Some(Hippocampus.findClosest(Point(0, 0), nearbyZugar)) else None
+  lazy val foodDirection: Option[Point] = {
+    if(nearbyZugar.size > 0)
+      Some(Hippocampus.findClosest(Point(0, 0), nearbyZugar))
+    else if(nearbyFluppets.size > 0)
+      Some(Hippocampus.findClosest(Point(0, 0), nearbyFluppets))
+    else None
+  }
 
   lazy val bestDirection: Point = (escapeRoute, foodDirection) match {
     case (Some(d), _) => Hippocampus.findClosest(d, openHeadings)
