@@ -15,4 +15,10 @@ class PointSpec extends FlatSpec {
     assert(Point(-3, 0).truncate === Point(-1, 0))
     assert(Point(1, 6).truncate === Point(1, 1))
   }
+
+  "invert" should "swap the signs on both axis" in {
+    assert(Point(5, -3).invert === Point(-5, 3))
+    assert(Point(0, 0).invert === Point(0,0))
+    assert(Point(-2, 3).invert === Point(2, -3))
+  }
 }
