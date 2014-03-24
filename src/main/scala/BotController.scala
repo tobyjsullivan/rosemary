@@ -17,18 +17,8 @@ object BotController {
   private def respondToReact(react: Command): String = {
     try {
       val state = new State(react)
-
-      // Look for food
-      val nearbyZugar = state.view.map(v => v.findAll('P')).getOrElse(Set())
-
-      // If zugar is near, move towards. Otherwise random
-      val dir = nearbyZugar.toList match {
-        case List() => {
-          val rand = new Random()
-          Point(rand.nextInt(3) - 1, rand.nextInt(3) - 1)
-        }
-        case _ => Hippocampus.findClosest(Point(0, 0), nearbyZugar).truncate
-      }
+      val cerebrum = new Cerebrum(state)
+      val dir = cerebrum.bestDirection
 
       // Gen a list of possible moves
       val moves = for {
