@@ -1,6 +1,6 @@
 import org.scalatest._
 
-class VisionSpec extends FlatSpec with Matchers {
+class VisionSpec extends FlatSpec {
   "constructor" should "throw an exception if length of input is not a perfect square" in {
     val view = List(
       "__s_p",
@@ -52,7 +52,7 @@ class VisionSpec extends FlatSpec with Matchers {
 
     val vision = new Vision(view.mkString)
 
-    vision.size should be (5)
+    assert(vision.size === 5)
   }
 
   "center" should "be 3,3 for an input of 5x5" in {
@@ -66,7 +66,7 @@ class VisionSpec extends FlatSpec with Matchers {
 
     val vision = new Vision(view.mkString)
 
-    vision.center should equal (Point(2, 2))
+    assert(vision.center === Point(2, 2))
   }
 
   "range" should "be 2 for an input of 5x5" in {
@@ -80,7 +80,7 @@ class VisionSpec extends FlatSpec with Matchers {
 
     val vision = new Vision(view.mkString)
 
-    vision.range should equal (2)
+    assert(vision.range === 2)
   }
 
   "lookAt" should "return the correct value for a given position within view" in {
@@ -94,10 +94,10 @@ class VisionSpec extends FlatSpec with Matchers {
 
     val vision = new Vision(view.mkString)
 
-    vision.lookAt(Point(2, -1)) should equal ('b')
-    vision.lookAt(Point(0, 0)) should equal ('M')
-    vision.lookAt(Point(-1, 1)) should equal ('W')
-    vision.lookAt(Point(0, -2)) should equal ('s')
+    assert(vision.lookAt(Point(2, -1)) === 'b')
+    assert(vision.lookAt(Point(0, 0)) === 'M')
+    assert(vision.lookAt(Point(-1, 1)) === 'W')
+    assert(vision.lookAt(Point(0, -2)) === 's')
   }
 
   it should "throw an exception for a position that is outside of view" in {
@@ -152,7 +152,7 @@ class VisionSpec extends FlatSpec with Matchers {
 
     val vision = new Vision(view.mkString)
 
-    vision.findAll('P') shouldEqual Set()
+    assert(vision.findAll('P') === Set())
   }
 
   it should "return a set of a single point if exactly one instance is within view" in {
@@ -166,7 +166,7 @@ class VisionSpec extends FlatSpec with Matchers {
 
     val vision = new Vision(view.mkString)
 
-    vision.findAll('P') shouldEqual Set(Point(-2, 0))
+    assert(vision.findAll('P') === Set(Point(-2, 0)))
   }
 
   it should "return all points where the target is located" in {
@@ -180,11 +180,15 @@ class VisionSpec extends FlatSpec with Matchers {
 
     val vision = new Vision(view.mkString)
 
-    vision.findAll('W') shouldEqual Set(
+    val res = vision.findAll('W')
+
+    val exp = Set(
       Point(-2, -1),
       Point(-2, 1),
       Point(-1, 1),
       Point(0, 1)
     )
+
+    assert(res === exp)
   }
 }

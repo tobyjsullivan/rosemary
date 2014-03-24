@@ -1,17 +1,19 @@
 import org.scalatest._
 
-class BotControllerSpec extends FlatSpec with Matchers {
+class BotControllerSpec extends FlatSpec {
   "respond" should "respond to a welcome command by setting an apocalypse date" in {
     val apocalypse = 459
     val input = "Welcome(name=some_name,apocalypse="+apocalypse+",round=9)"
 
     val response = BotController.respond(input)
 
-    response should include ("Set(apocalypse="+apocalypse+")")
+    assert(response.indexOf("Set(apocalypse="+apocalypse+")") >= 0)
   }
 
   it should "respond to a goodbye command with no commands" in {
-    BotController.respond("Goodbye(energy=12983)") should be ("")
+    val res = BotController.respond("Goodbye(energy=12983)")
+
+    assert(res === "")
   }
 
   /**
@@ -30,7 +32,7 @@ class BotControllerSpec extends FlatSpec with Matchers {
 
     val response = BotController.respond(input)
 
-    response shouldEqual ("Move(direction=-1:0)")
+    assert(response === "Move(direction=-1:0)")
   }
 
   it should "Move randomly if there is no nearby zugar" in {
@@ -46,6 +48,6 @@ class BotControllerSpec extends FlatSpec with Matchers {
 
     val response = BotController.respond(input)
 
-    response should include ("Move(direction=")
+    assert(response.indexOf("Move(direction=") >= 0)
   }
 }
