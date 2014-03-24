@@ -9,4 +9,10 @@ class PointSpec extends FlatSpec {
     assert(Point(6, 4).toDirectionString === "1:1")
     assert(Point(1, -5).toDirectionString === "1:-1")
   }
+
+  "truncate" should "trim point to acceptable direction range" in {
+    assert(Point(5, -3).truncate === Point(1, -1))
+    assert(Point(-3, 0).truncate === Point(-1, 0))
+    assert(Point(1, 6).truncate === Point(1, 1))
+  }
 }
