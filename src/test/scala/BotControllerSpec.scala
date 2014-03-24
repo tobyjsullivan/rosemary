@@ -21,8 +21,8 @@ class BotControllerSpec extends FlatSpec {
    */
   it should "Move to nearby zugar" in {
     val view = List(
-      "__s_p",
-      "W___b",
+      "____p",
+      "W____",
       "P_MS_",
       "WWW_B",
       "????_"
