@@ -25,10 +25,7 @@ class Cerebrum(state: State) {
 
     val rewardMap = moves.map(p => (p -> calcRiskRewardRatio(p)))
 
-    println(rewardMap)
-
     val res = rewardMap.toSeq.sortBy(kv => kv._2).last
-    println("Expected reward: " + res._2)
     res._1
   }
 
@@ -50,7 +47,7 @@ class Cerebrum(state: State) {
       ratio = if (halflife == 0 && inst == pos) weight.toDouble else (weight.toDouble * (halflife.toDouble / distance))
     } yield ratio
 
-    val masterBonus = if(headToMaster) 1000.0 / math.max(Hippocampus.distance(pos, state.master.get), 0.1) else 0.0
+    val masterBonus = if(headToMaster) state.energy.get.toDouble / math.max(Hippocampus.distance(pos, state.master.get), 0.1) else 0.0
 
     ratios.foldRight(0.0)((z, r) => z + r) + masterBonus
   }

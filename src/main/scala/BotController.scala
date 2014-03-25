@@ -1,5 +1,8 @@
 
 object BotController {
+  val Debug = false
+  val Slaves = 100
+
   def respond(input: String): String = Command.parse(input) match {
     case welcome @ Command("Welcome", _) => respondToWelcome(welcome)
     case react @ Command("React", _) => respondToReact(react)
@@ -32,19 +35,19 @@ object BotController {
       val newRelPos = relPos + bestDir
       state.remember("RelPos", newRelPos.toString)
 
-      val status = Command("Status", Map("text" -> state.energy.getOrElse(0).toString))
+      val status = if(Debug) Some(Command("Status", Map("text" -> state.energy.getOrElse(0).toString))) else None
 
       val slaves = state.slaves.getOrElse(0)
       val energy = state.energy.getOrElse(0)
 
-      val spawn = if(energy > 1000 && slaves < 50) Some(Command("Spawn", Map())) else None
+      val spawn = if(energy > 1000 && slaves < Slaves) Some(Command("Spawn", Map())) else None
 
       val cmd = Command("Move", Map("direction" -> bestDir.toString))
 
       // Get new memories to Set(...)
       val memories = state.memoryConsolidation()
 
-      Command.compose(Seq(cmd, memories, status) ++ spawn.toList)
+      Command.compose(Seq(cmd, memories) ++ status.toList ++ spawn.toList)
     } catch {
       case e: Exception => {
         println(e.getMessage())
