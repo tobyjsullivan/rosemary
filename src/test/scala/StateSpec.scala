@@ -81,14 +81,14 @@ class StateSpec extends FlatSpec with Matchers {
   }
 
   "recall" should "return None for an unset key" in {
-    val cmd = Command("React", Map())
+    val cmd = Command("React", Map("generation" -> "0"))
     val state = new State(cmd)
 
     assert(state.recall("doesntExist") === None)
   }
 
   it should "return the correct value for a remembered key" in {
-    val cmd = Command("React", Map())
+    val cmd = Command("React", Map("generation" -> "0"))
     val state = new State(cmd)
 
     state.remember("keyA", "myValue")
@@ -97,7 +97,7 @@ class StateSpec extends FlatSpec with Matchers {
   }
 
   it should "return exactly the last remembered value for a given key" in {
-    val cmd = Command("React", Map())
+    val cmd = Command("React", Map("generation" -> "0"))
     val state = new State(cmd)
 
     state.remember("keyA", "someValue")
@@ -107,7 +107,7 @@ class StateSpec extends FlatSpec with Matchers {
   }
 
   it should "remember multiple different values for different keys" in {
-    val cmd = Command("React", Map())
+    val cmd = Command("React", Map("generation" -> "0"))
     val state = new State(cmd)
 
     state.remember("keyA", "value201")
@@ -121,7 +121,7 @@ class StateSpec extends FlatSpec with Matchers {
   }
 
   it should "return the same value for the same key consistently" in {
-    val cmd = Command("React", Map())
+    val cmd = Command("React", Map("generation" -> "0"))
     val state = new State(cmd)
 
     state.remember("keyA", "value1")
@@ -132,15 +132,22 @@ class StateSpec extends FlatSpec with Matchers {
     assert(state.recall("keyA") === Some("value1"))
   }
 
+  it should "return values specied in the react command" in {
+    val cmd = Command("React", Map("generation" -> "0", "keyA" -> "value123"))
+    val state = new State(cmd)
+
+    assert(state.recall("keyA") === Some("value123"))
+  }
+
   "memoryConsolidation" should "return an empty map if nothing has been remembered" in {
-    val cmd = Command("React", Map())
+    val cmd = Command("React", Map("generation" -> "0"))
     val state = new State(cmd)
 
     assert(state.memoryConsolidation() === Command("Set", Map()))
   }
 
   it should "return all key-value pairs that have been remembered" in {
-    val cmd = Command("React", Map())
+    val cmd = Command("React", Map("generation" -> "0"))
     val state = new State(cmd)
 
     state.remember("keyA", "valueA")

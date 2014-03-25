@@ -7,7 +7,7 @@ class State(react: Command) {
 
   lazy val view: Option[Vision] = react.params.get("view").map(s => new Vision(s))
 
-  private var _memory: Map[String, String] = Map()
+  private var _memory: Map[String, String] = react.params
   private var _dirtyThoughts: Set[String] = Set()
   def remember(key: String, value: String) {
     _memory += key -> value
