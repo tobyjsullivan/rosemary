@@ -13,6 +13,13 @@ class Cerebrum(state: State) {
     'W' ->(-2000, 0)
   )
 
+  lazy val headToMaster: Boolean = {
+    val generation = state.generation.getOrElse(0)
+    val energy = state.energy.getOrElse(0)
+
+    (generation > 0 && energy > 1000)
+  }
+
   lazy val bestDirection: Point = {
     val moves = getPossibleMoves()
 
@@ -35,7 +42,7 @@ class Cerebrum(state: State) {
     res.toSet
   }
 
-  def calcRiskRewardRatio(pos: Point, subs: Int = 1): Double = {
+  def calcRiskRewardRatio(pos: Point): Double = {
     val ratios = for {
       (entity, (weight, halflife)) <- EntityWeightHalflife
       inst <- state.view.map(v => v.findAll(entity)).getOrElse(Set())
@@ -43,6 +50,8 @@ class Cerebrum(state: State) {
       ratio = if (halflife == 0 && inst == pos) weight.toDouble else (weight.toDouble * (halflife.toDouble / distance))
     } yield ratio
 
-    ratios.foldRight(0.0)((z, r) => z + r)
+    val masterBonus = if(headToMaster) 1000.0 / math.max(Hippocampus.distance(pos, state.master.get), 0.1) else 0.0
+
+    ratios.foldRight(0.0)((z, r) => z + r) + masterBonus
   }
 }

@@ -32,14 +32,19 @@ object BotController {
       val newRelPos = relPos + bestDir
       state.remember("RelPos", newRelPos.toString)
 
-      val status = Command("Status", Map("text" -> newRelPos.toString))
+      val status = Command("Status", Map("text" -> state.energy.getOrElse(0).toString))
+
+      val slaves = state.slaves.getOrElse(0)
+      val energy = state.energy.getOrElse(0)
+
+      val spawn = if(energy > 1000 && slaves < 50) Some(Command("Spawn", Map())) else None
 
       val cmd = Command("Move", Map("direction" -> bestDir.toString))
 
       // Get new memories to Set(...)
       val memories = state.memoryConsolidation()
 
-      Command.compose(Seq(cmd, memories, status))
+      Command.compose(Seq(cmd, memories, status) ++ spawn.toList)
     } catch {
       case e: Exception => {
         println(e.getMessage())
