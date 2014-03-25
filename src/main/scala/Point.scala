@@ -12,10 +12,8 @@ object Point {
 }
 
 case class Point(x: Int, y: Int) {
-  def toDirectionString: String = {
-    val trunc = this.truncate
-
-    ""+trunc.x+":"+trunc.y
+  override def toString: String = {
+    ""+this.x+":"+this.y
   }
 
   def truncate: Point = {
@@ -28,6 +26,20 @@ case class Point(x: Int, y: Int) {
   def invert: Point = {
     val x = 0 - this.x
     val y = 0 - this.y
+
+    Point(x, y)
+  }
+
+  def -(o: Point): Point = {
+    val x = this.x - o.x
+    val y = this.y - o.y
+
+    Point(x, y)
+  }
+
+  def +(o: Point): Point = {
+    val x = this.x + o.x
+    val y = this.y + o.y
 
     Point(x, y)
   }
