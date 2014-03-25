@@ -21,4 +21,20 @@ class PointSpec extends FlatSpec {
     assert(Point(0, 0).invert === Point(0,0))
     assert(Point(-2, 3).invert === Point(2, -3))
   }
+
+  "parse" should "throw an exception when an invalid string is provided" in {
+    intercept[IllegalArgumentException] {
+      Point.parse("not a point")
+    }
+
+    intercept[IllegalArgumentException] {
+      Point.parse(":")
+    }
+  }
+
+  it should "correctly parse valid coordinates" in {
+    assert(Point.parse("-1:1") === Point(-1, 1))
+    assert(Point.parse("13:-21") === Point(13, -21))
+    assert(Point.parse("0:0") === Point(0, 0))
+  }
 }

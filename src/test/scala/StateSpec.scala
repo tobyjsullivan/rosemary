@@ -51,6 +51,20 @@ class StateSpec extends FlatSpec with Matchers {
     assert(state.generation === None)
   }
 
+  "collision" should "return the correct point if a collision was specified" in {
+    val cmd = Command("React", Map("collision" -> "-1:1"))
+    val state = new State(cmd)
+
+    assert(state.collision === Some(Point(-1,1)))
+  }
+
+  it should "return None if no collision key was specified" in {
+    val cmd = Command("React", Map("energy" -> "10000"))
+    val state = new State(cmd)
+
+    assert(state.collision === None)
+  }
+
   "view" should "return some Vision if a view was specified" in {
     val view = List(
       "__s_p",

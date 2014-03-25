@@ -3,6 +3,7 @@ class State(react: Command) {
 
   lazy val generation: Option[Int] = react.params.get("generation").map(s => s.toInt)
   lazy val energy: Option[Int] = react.params.get("energy").map(s => s.toInt)
+  lazy val collision: Option[Point] = react.params.get("collision").map(s => Point.parse(s))
 
   lazy val view: Option[Vision] = react.params.get("view").map(s => new Vision(s))
 
