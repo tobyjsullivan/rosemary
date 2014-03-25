@@ -1,4 +1,3 @@
-import util.Random
 
 object BotController {
   def respond(input: String): String = Command.parse(input) match {
@@ -18,12 +17,9 @@ object BotController {
     try {
       val state = new State(react)
 
-      println("Position: "+state.recall("RelPos"))
-
       val relPos = (state.recall("RelPos"), state.collision) match {
         case (Some(sPos), Some(collision)) => {
           val pos = Point.parse(sPos)
-
           pos - collision
         }
         case (Some(sPos), None) => Point.parse(sPos)
@@ -31,27 +27,14 @@ object BotController {
       }
 
       val cerebrum = new Cerebrum(state)
-      val dir = cerebrum.bestDirection
+      val bestDir = cerebrum.bestDirection.truncate
 
-      // Gen a list of possible moves
-      val moves = for {
-        x: Int <- (-1 to 1).toSet
-        y: Int <- -1 to 1
-        point = Point(x, y)
-      } yield point
-
-      // Find the best available move that is not blocked
-      val view = state.view.get
-      val bestDir = Hippocampus.findClosest(dir, moves.filter(p => view.lookAt(p) != 'W' && view.lookAt(p) != 'p'))
-
-      val trimmedDir = bestDir.truncate
-
-      val newRelPos = relPos + trimmedDir
+      val newRelPos = relPos + bestDir
       state.remember("RelPos", newRelPos.toString)
 
       val status = Command("Status", Map("text" -> newRelPos.toString))
 
-      val cmd = Command("Move", Map("direction" -> trimmedDir.toString))
+      val cmd = Command("Move", Map("direction" -> bestDir.toString))
 
       // Get new memories to Set(...)
       val memories = state.memoryConsolidation()
