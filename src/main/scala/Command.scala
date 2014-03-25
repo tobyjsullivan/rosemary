@@ -9,6 +9,10 @@ object Command {
 
     Command(opcode, params)
   }
+
+  def compose(commands: Seq[Command]): String = {
+    commands.mkString("|")
+  }
 }
 
 case class Command (opcode: String, params: Map[String, String]) {

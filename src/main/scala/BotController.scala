@@ -33,7 +33,10 @@ object BotController {
 
       val cmd = Command("Move", Map("direction" -> bestDir.toDirectionString))
 
-      cmd.toString
+      // Get new memories to Set(...)
+      val memories = state.memoryConsolidation()
+
+      Command.compose(Seq(cmd, memories))
     } catch {
       case e: Exception => {
         println(e.getMessage())

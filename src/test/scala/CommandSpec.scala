@@ -15,4 +15,15 @@ class CommandSpec extends FlatSpec {
 
     assert(cmd.toString === "MyCommand(key1=value1,key2=value2)")
   }
+
+  "compose" should "output correctly appended commands" in {
+    val cmds = Seq(
+      Command("Move", Map("direction"->"1:-1")),
+      Command("Set", Map("keyA" -> "value1", "keyB" -> "value2"))
+    )
+
+    val expected = "Move(direction=1:-1)|Set(keyA=value1,keyB=value2)"
+
+    assert(Command.compose(cmds) === expected)
+  }
 }

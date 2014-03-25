@@ -65,4 +65,73 @@ class StateSpec extends FlatSpec with Matchers {
 
     assert(state.view.isInstanceOf[Some[Vision]])
   }
+
+  "recall" should "return None for an unset key" in {
+    val cmd = Command("React", Map())
+    val state = new State(cmd)
+
+    assert(state.recall("doesntExist") === None)
+  }
+
+  it should "return the correct value for a remembered key" in {
+    val cmd = Command("React", Map())
+    val state = new State(cmd)
+
+    state.remember("keyA", "myValue")
+
+    assert(state.recall("keyA") === Some("myValue"))
+  }
+
+  it should "return exactly the last remembered value for a given key" in {
+    val cmd = Command("React", Map())
+    val state = new State(cmd)
+
+    state.remember("keyA", "someValue")
+    state.remember("keyA", "aNewValue")
+
+    assert(state.recall("keyA") === Some("aNewValue"))
+  }
+
+  it should "remember multiple different values for different keys" in {
+    val cmd = Command("React", Map())
+    val state = new State(cmd)
+
+    state.remember("keyA", "value201")
+    state.remember("keyB", "value 402")
+    state.remember("keyC", "valueXYZ")
+
+
+    assert(state.recall("keyA") === Some("value201"))
+    assert(state.recall("keyB") === Some("value 402"))
+    assert(state.recall("keyC") === Some("valueXYZ"))
+  }
+
+  it should "return the same value for the same key consistently" in {
+    val cmd = Command("React", Map())
+    val state = new State(cmd)
+
+    state.remember("keyA", "value1")
+
+    assert(state.recall("keyA") === Some("value1"))
+    assert(state.recall("keyA") === Some("value1"))
+    assert(state.recall("keyA") === Some("value1"))
+    assert(state.recall("keyA") === Some("value1"))
+  }
+
+  "memoryConsolidation" should "return an empty map if nothing has been remembered" in {
+    val cmd = Command("React", Map())
+    val state = new State(cmd)
+
+    assert(state.memoryConsolidation() === Command("Set", Map()))
+  }
+
+  it should "return all key-value pairs that have been remembered" in {
+    val cmd = Command("React", Map())
+    val state = new State(cmd)
+
+    state.remember("keyA", "valueA")
+    state.remember("keyB", "value333")
+
+    assert(state.memoryConsolidation() === Command("Set", Map("keyA" -> "valueA", "keyB" -> "value333")))
+  }
 }

@@ -32,7 +32,7 @@ class BotControllerSpec extends FlatSpec {
 
     val response = BotController.respond(input)
 
-    assert(response === "Move(direction=-1:0)")
+    assert(response.contains("Move(direction=-1:0)"))
   }
 
   it should "Move randomly if there is no nearby zugar" in {
@@ -48,6 +48,6 @@ class BotControllerSpec extends FlatSpec {
 
     val response = BotController.respond(input)
 
-    assert(response.indexOf("Move(direction=") >= 0)
+    assert(response.contains("Move(direction="))
   }
 }
