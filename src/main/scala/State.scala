@@ -12,13 +12,14 @@ class State(react: Command) {
   lazy val mode: ThoughtMode = react.params.get("mode").map {
     case ForageMode.id => ForageMode
     case InterceptMode.id => InterceptMode
+    case MissileMode.id => MissileMode
     case _ => Config.DefaultBotMode
   }.getOrElse(modeFromName)
 
-  lazy val modeFromName: ThoughtMode = name match {
-    case None => ForageMode
-    case Some(ForageMode.id) => ForageMode
-    case Some(InterceptMode.id) => InterceptMode
+  lazy val modeFromName: ThoughtMode = name.getOrElse("") match {
+    case ForageMode.id => ForageMode
+    case InterceptMode.id => InterceptMode
+    case MissileMode.id => MissileMode
     case _ => Config.DefaultBotMode
   }
 

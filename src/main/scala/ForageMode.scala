@@ -25,16 +25,22 @@ object ForageMode extends ThoughtMode {
     val slaves = state.slaves.getOrElse(0)
     val energy = state.energy.getOrElse(0)
 
-    val nearbyEnemyBot = state.view.flatMap(v => nearestEnemyMiniBot(v))
+    val nearbyEnemyMiniBot = state.view.flatMap(v => nearestElement(v, 's'))
+    val nearbyEnemyMasterBot = state.view.flatMap(v => nearestElement(v, 'S'))
 
     // Spawn an intercept bot if there's a nearby enemy minibot.
     // Otherwise, spawn an extra forage bot (if enough room and energy)
-    val spawn = if (nearbyEnemyBot.isDefined) Some(Command("Spawn", Map(
+    val spawn = if (nearbyEnemyMiniBot.isDefined) Some(Command("Spawn", Map(
       "name" -> InterceptMode.id,
       "energy" -> Config.InterceptBotEnergy.toString,
-      "direction" -> nearbyEnemyBot.get.truncate.toString)))
+      "direction" -> nearbyEnemyMiniBot.get.truncate.toString)))
+    else if (nearbyEnemyMasterBot.isDefined) Some(Command("Spawn", Map(
+      "name" -> MissileMode.id,
+      "energy" -> Config.MissileBotEnergy.toString,
+      "direction" -> nearbyEnemyMasterBot.get.truncate.toString)))
     else if (energy > 1000 && slaves < maxSlaves) Some(Command("Spawn", Map(
       "name" -> ForageMode.id,
+      "energy" -> Config.ForageBotEnergy.toString,
       "direction" -> bestDir.invert.toString)))
     else None
 
@@ -46,8 +52,8 @@ object ForageMode extends ThoughtMode {
     Seq(cmd, memories) ++ status.toList ++ spawn.toList
   }
 
-  def nearestEnemyMiniBot(view: Vision): Option[Point] = {
-    val allEnemyMiniBots: Set[Point] = view.findAll('s')
+  def nearestElement(view: Vision, el: Char): Option[Point] = {
+    val allEnemyMiniBots: Set[Point] = view.findAll(el)
     if(allEnemyMiniBots.size > 0) Some(Hippocampus.findClosest(Point(0,0), allEnemyMiniBots)) else None
   }
 }

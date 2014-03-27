@@ -5,6 +5,11 @@ object Config {
 
   val DefaultBotMode: ThoughtMode = ForageMode
 
-  val InterceptBotEnergy = 500
+  val ForageBotEnergy = 100
+
+  val InterceptBotEnergy = 200
   val InterceptBotDamage = 200
+
+  val MissileBotEnergy = 200
+  val MissileExplosionRange = 2
 }
