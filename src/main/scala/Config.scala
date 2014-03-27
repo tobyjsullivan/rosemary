@@ -1,10 +1,9 @@
 
 object Config {
-  val Debug = true
-  val DefaultMaxSlaves = 5
+  val Debug = false
+  val DefaultMaxSlaves = 15
 
   val DefaultBotMode: ThoughtMode = ForageMode
-
   val ForageBotEnergy = 100
 
   val InterceptBotEnergy = 200
