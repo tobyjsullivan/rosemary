@@ -21,9 +21,9 @@ class BotControllerSpec extends FlatSpec {
    */
   it should "Move to nearby zugar" in {
     val view = List(
-      "____p",
+      "_____",
       "W____",
-      "P_MS_",
+      "P_M__",
       "WWW__",
       "????_"
     )
@@ -37,10 +37,10 @@ class BotControllerSpec extends FlatSpec {
 
   it should "Move randomly if there is no nearby zugar" in {
     val view = List(
-      "__s_p",
-      "W___b",
-      "__MS_",
-      "WWW_B",
+      "_____",
+      "W____",
+      "__M__",
+      "WWW__",
       "????_"
     )
 

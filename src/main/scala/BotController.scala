@@ -1,7 +1,7 @@
 
 object BotController {
-  val Debug = false
-  val Slaves = 100
+  val Debug = true
+  val Slaves = 10
 
   def respond(input: String): String = Command.parse(input) match {
     case welcome @ Command("Welcome", _) => respondToWelcome(welcome)
@@ -20,14 +20,15 @@ object BotController {
     try {
       val state = new State(react)
 
-      val relPos = (state.recall("RelPos"), state.collision) match {
+      // Master bot should update relPos
+      val relPos: Point = if(state.generation.getOrElse(-1) == 0) (state.recall("RelPos"), state.collision) match {
         case (Some(sPos), Some(collision)) => {
           val pos = Point.parse(sPos)
           pos - collision
         }
         case (Some(sPos), None) => Point.parse(sPos)
-        case (None, _) => Point(0,0)
-      }
+        case ( None, _) => Point(0,0)
+      } else (state.recall("RelPos").map(s => Point.parse(s)).getOrElse(Point(0,0)) + state.master.getOrElse(Point(0,0)))
 
       val cerebrum = new Cerebrum(state)
       val bestDir = cerebrum.bestDirection.truncate
@@ -35,7 +36,7 @@ object BotController {
       val newRelPos = relPos + bestDir
       state.remember("RelPos", newRelPos.toString)
 
-      val status = if(Debug) Some(Command("Status", Map("text" -> state.energy.getOrElse(0).toString))) else None
+      val status = if(Debug) Some(Command("Status", Map("text" -> relPos.toString))) else None
 
       val slaves = state.slaves.getOrElse(0)
       val energy = state.energy.getOrElse(0)
