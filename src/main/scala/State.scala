@@ -7,7 +7,20 @@ class State(react: Command) {
   lazy val time: Option[Int] = react.params.get("time").map(s => s.toInt)
   lazy val slaves: Option[Int] = react.params.get("slaves").map(s => s.toInt)
   lazy val master: Option[Point] = react.params.get("master").map(s => Point.parse(s))
+  lazy val name: Option[String] = react.params.get("name")
 
+  lazy val mode: ThoughtMode = react.params.get("mode").map {
+    case ForageMode.id => ForageMode
+    case InterceptMode.id => InterceptMode
+    case _ => Config.DefaultBotMode
+  }.getOrElse(modeFromName)
+
+  lazy val modeFromName: ThoughtMode = name match {
+    case None => ForageMode
+    case Some(ForageMode.id) => ForageMode
+    case Some(InterceptMode.id) => InterceptMode
+    case _ => Config.DefaultBotMode
+  }
 
   lazy val view: Option[Vision] = react.params.get("view").map(s => new Vision(s))
 

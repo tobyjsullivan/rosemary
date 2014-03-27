@@ -19,9 +19,11 @@ object BotController {
     try {
       val state = new State(react)
 
-      val mode = ForageMode
+      val mode: ThoughtMode = state.mode
 
-      Command.compose(mode.react(state))
+      val status = if(Config.Debug) Some(Command("Status", Map("text" -> state.name.getOrElse("unknown")))) else None
+
+      Command.compose(mode.react(state) ++ status.toList)
     } catch {
       case e: Exception => {
         println(e.getMessage())
