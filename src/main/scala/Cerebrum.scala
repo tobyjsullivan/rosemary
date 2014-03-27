@@ -8,7 +8,8 @@ class Cerebrum(state: State) {
     'p' ->(-100, 0),
     'B' ->(200, 2),
     'b' ->(-150, 1),
-    'm' ->(-500, 1), // We provide a half life to this to discourage clustering (esp in corners)
+    'm' ->(-2000, 0),
+    'S' -> (-200, 1), // We provide a half life to this to discourage clustering (esp in corners)
     's' ->(-200, 4),
     'W' ->(-2000, 0)
   )
@@ -41,7 +42,7 @@ class Cerebrum(state: State) {
 
   def calcRiskRewardRatio(pos: Point): Double = {
     val ratios = for {
-      (entity, (weight, halflife)) <- EntityWeightHalflife
+      (entity, (weight, halflife)) <- EntityWeightHalflife if !(entity == 'S' && state.generation.getOrElse(-1) == 0) // Masters need not be afraid of slaves
       inst <- state.view.map(v => v.findAll(entity)).getOrElse(Set())
       distance = math.max(Hippocampus.distance(pos, inst), 0.1)
       ratio = if (halflife == 0 && inst == pos) weight.toDouble else (weight.toDouble * (halflife.toDouble / distance))
