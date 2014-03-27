@@ -7,7 +7,7 @@ class BotControllerSpec extends FlatSpec {
 
     val response = BotController.respond(input)
 
-    assert(response.indexOf("Set(apocalypse="+apocalypse+")") >= 0)
+    assert(response.indexOf("apocalypse="+apocalypse) >= 0)
   }
 
   it should "respond to a goodbye command with no commands" in {
