@@ -26,7 +26,7 @@ object ForageMode extends ThoughtMode {
     val energy = state.energy.getOrElse(0)
 
     val nearbyEnemyMiniBot = state.view.flatMap(v => nearestElement(v, 's'))
-    val nearbyEnemyMasterBot = state.view.flatMap(v => nearestElement(v, 'S'))
+    val nearbyEnemyMasterBot = state.view.flatMap(v => nearestElement(v, 'm'))
 
     // Spawn an intercept bot if there's a nearby enemy minibot.
     // Otherwise, spawn an extra forage bot (if enough room and energy)

@@ -21,7 +21,7 @@ object BotController {
 
       val mode: ThoughtMode = state.mode
 
-      val status = if(Config.Debug) Some(Command("Status", Map("text" -> state.name.getOrElse("unknown")))) else None
+      val status = if(Config.Debug) Some(Command("Status", Map("text" -> state.mode.id))) else None
 
       Command.compose(mode.react(state) ++ status.toList)
     } catch {
