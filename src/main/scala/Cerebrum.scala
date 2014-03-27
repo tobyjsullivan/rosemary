@@ -8,7 +8,7 @@ class Cerebrum(state: State) {
     'p' ->(-100, 0),
     'B' ->(200, 2),
     'b' ->(-150, 1),
-    'm' ->(-2000, 0),
+    'm' ->(-500, 1), // We provide a half life to this to discourage clustering (esp in corners)
     's' ->(-200, 4),
     'W' ->(-2000, 0)
   )

@@ -20,4 +20,9 @@ object Hippocampus {
       else p2
     }
   }
+
+  def isInBetween(origin: Point, target: Point, obstacle: Point): Boolean = {
+    // A very simple implementation. Could probably be improved
+    (target - origin).truncate == obstacle
+  }
 }

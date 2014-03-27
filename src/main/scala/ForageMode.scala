@@ -25,16 +25,16 @@ object ForageMode extends ThoughtMode {
     val slaves = state.slaves.getOrElse(0)
     val energy = state.energy.getOrElse(0)
 
-    val nearbyEnemyMiniBot = state.view.flatMap(v => nearestElement(v, 's'))
-    val nearbyEnemyMasterBot = state.view.flatMap(v => nearestElement(v, 'm'))
+    lazy val nearbyEnemyMiniBot = state.view.flatMap(v => nearestElement(v, 's'))
+    lazy val nearbyEnemyMasterBot = state.view.flatMap(v => nearestElement(v, 'm'))
 
     // Spawn an intercept bot if there's a nearby enemy minibot.
     // Otherwise, spawn an extra forage bot (if enough room and energy)
-    val spawn = if (nearbyEnemyMiniBot.isDefined) Some(Command("Spawn", Map(
+    val spawn = if (energy > 5000 && nearbyEnemyMiniBot.isDefined) Some(Command("Spawn", Map(
       "name" -> InterceptMode.id,
       "energy" -> Config.InterceptBotEnergy.toString,
       "direction" -> nearbyEnemyMiniBot.get.truncate.toString)))
-    else if (nearbyEnemyMasterBot.isDefined) Some(Command("Spawn", Map(
+    else if (energy > 25000 && nearbyEnemyMasterBot.isDefined) Some(Command("Spawn", Map(
       "name" -> MissileMode.id,
       "energy" -> Config.MissileBotEnergy.toString,
       "direction" -> nearbyEnemyMasterBot.get.truncate.toString)))
@@ -45,6 +45,11 @@ object ForageMode extends ThoughtMode {
     else None
 
     val cmd = Command("Move", Map("direction" -> bestDir.toString))
+
+    if(cerebrum.headToMaster && WallMode.inCorner(state)) {
+      val masterHeading = state.master.getOrElse(Point(0,0))
+      WallMode.initVals(newRelPos, masterHeading, state)
+    }
 
     // Get new memories to Set(...)
     val memories = state.memoryConsolidation()
